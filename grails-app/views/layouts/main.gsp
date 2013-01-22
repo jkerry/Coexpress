@@ -29,7 +29,7 @@
 			<div class="span12">
 				<div class="navbar .navbar-static-to">
   					<div class="navbar-inner">
-    					<a class="brand" href="#">Coexpress</a>
+    					<a class="brand" href="/Coexpress/">Coexpress</a>
     					<ul class="nav">
       						<li class="active"><a href="#">Home</a></li>
       						<li><a href="#">Link</a></li>
