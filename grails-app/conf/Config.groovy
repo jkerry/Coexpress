@@ -89,3 +89,7 @@ log4j = {
            'org.hibernate',
            'net.sf.ehcache.hibernate'
 }
+
+//graph rendering options
+nodeShape 	= "circle"
+nodeDim		= 5

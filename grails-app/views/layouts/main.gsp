@@ -25,22 +25,23 @@
 		<r:layoutResources />
 	</head>
 	<body>
-	
-		<div class="navbar">
-  			<div class="navbar-inner">
-    			<a class="brand" href="#">Coexpress</a>
-    			<ul class="nav">
-      				<li class="active"><a href="#">Home</a></li>
-      				<li><a href="#">Link</a></li>
-      				<li><a href="#">Link</a></li>
-    			</ul>
-  			</div>
+		<div class="row">
+			<div class="span12">
+				<div class="navbar .navbar-static-to">
+  					<div class="navbar-inner">
+    					<a class="brand" href="#">Coexpress</a>
+    					<ul class="nav">
+      						<li class="active"><a href="#">Home</a></li>
+      						<li><a href="#">Link</a></li>
+      						<li><a href="#">Link</a></li>
+    					</ul>
+  					</div>
+				</div>
+			</div>
 		</div>
 		<!--[if lt IE 7]>
-            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+            <div class="row"><p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p></div>
         <![endif]-->
-        
-		<div id="grailsLogo" role="banner"><a href="http://grails.org"><img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/></a></div>
 		<g:layoutBody/>
 		<div class="footer" role="contentinfo"></div>
 		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
