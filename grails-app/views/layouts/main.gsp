@@ -29,11 +29,12 @@
 			<div class="span12">
 				<div class="navbar .navbar-static-to">
   					<div class="navbar-inner">
-    					<a class="brand" href="/Coexpress/">Coexpress</a>
+    					<a class="brand" href="${createLink(uri: '/')}">Coexpress</a>
     					<ul class="nav">
-      						<li class="active"><a href="#">Home</a></li>
-      						<li><a href="#">Link</a></li>
-      						<li><a href="#">Link</a></li>
+      						<li><a href="${createLink(uri: '/')}">Home</a></li>
+      						<li><g:link controller="Module">Modules</g:link></li>
+      						<li><g:link controller="Transcript">Transcripts</g:link></li>
+      						
     					</ul>
   					</div>
 				</div>

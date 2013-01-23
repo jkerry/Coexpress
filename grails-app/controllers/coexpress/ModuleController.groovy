@@ -8,10 +8,53 @@ class ModuleController {
 	
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
+	/*def burnit() {
+		def modules = Module.list();
+		def traits = Trait.list();
+		
+		modules.each { mod ->
+			print "adding default correlation values for ${mod.name}"
+			traits.each{ trait ->
+				def tmpmod = new ModuleTraitStats(module: mod, trait: trait, correlation:(double)0.0, pValue:(double)1.0);
+				if(!tmpmod.save(flush:true)){print "there was a problem with ${tmpmod}"}
+			}
+		}
+	}*/
+	
+	
     def index() {
-        redirect(action: "list", params: params)
+        redirect(action: "correlationTables", params: params)
     }
 
+	def correlationTables(){
+		/*if you havent selected a mapping run, redirect to do so*/
+		if(session["mapping_id"]==null){
+			redirect(controller:"Mapping",action:"select", params:params)
+		}
+		else{
+			def thisMap = Mapping.findById(session["mapping_id"]);
+			def modules = Module.findAllWhere( map:thisMap );
+			modules.sort {it.name};
+			def traits = Trait.findAllWhere( map:thisMap );
+			traits.sort {it.id}
+			def table = [:]
+			modules.each { mod ->
+				def row = [];
+				def stats = ModuleTraitStats.findAllWhere(module:mod)
+				stats.sort {it.trait.id}
+				traits.each{ trt ->
+					stats.each{
+						if(it.trait.name.compareTo(trt.name)==0){
+							row.add(it);
+						}
+					}
+				}
+				table.put(mod.name, row)
+			}
+			[modules:modules, traits:traits, table:table]
+		}
+	}
+	
     def list(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         [moduleInstanceList: Module.list(params), moduleInstanceTotal: Module.count()]

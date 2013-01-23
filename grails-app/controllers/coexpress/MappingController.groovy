@@ -10,6 +10,19 @@ class MappingController {
         redirect(action: "list", params: params)
     }
 
+	/*
+	 * user defined actions
+	 */
+	
+	def set(){
+		session["mapping_id"] = 1;
+	}
+	
+	def unset(){
+		session["mapping_id"] = null;
+	}
+	 
+	
     def list(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         [mappingInstanceList: Mapping.list(params), mappingInstanceTotal: Mapping.count()]
