@@ -10,7 +10,7 @@
 </head>
 <body>
 
-	<canvas id="viewport" width="800" height="600"></canvas>
+	<canvas id="viewport"></canvas>
 
 
 	<g:javascript src="jquery/arbor/jquery.arbor.js" />
@@ -18,32 +18,50 @@
 	<g:javascript>
 	
 			$(document).ready(function(){
-
+				
+				
+				
   				var Renderer = function(canvas){
     			var canvas = $(canvas).get(0)
     			var ctx = canvas.getContext("2d");
     			var particleSystem
     			
+    			//initially resize the canvas
+    			canvas.width = $(window).width()
+        		canvas.height =$(window).height()-80
+    			
     			var that = {
       			init:function(system){
-        		//
-        		// the particle system will call the init function once, right before the
-        		// first frame is to be drawn. it's a good place to set up the canvas and
-        		// to pass the canvas size to the particle system
-        		//
-        		// save a reference to the particle system for use in the .redraw() loop
-        		particleSystem = system
+        			//
+        			// the particle system will call the init function once, right before the
+        			// first frame is to be drawn. it's a good place to set up the canvas and
+        			// to pass the canvas size to the particle system
+        			//
+        			// save a reference to the particle system for use in the .redraw() loop
+        			particleSystem = system
+        		
+        		
+        			
+        			$(window).resize(that.resize)
+        			that.resize()
 
-        		// inform the system of the screen dimensions so it can map coords for us.
-        		// if the canvas is ever resized, screenSize should be called again with
-        		// the new dimensions
+
+        			// inform the system of the screen dimensions so it can map coords for us.
+        			// if the canvas is ever resized, screenSize should be called again with
+        			// the new dimensions
         		particleSystem.screenSize(canvas.width, canvas.height) 
        			 particleSystem.screenPadding(80) // leave an extra 80px of whitespace per side
         
         		// set up some event handlers to allow for node-dragging
         		that.initMouseHandling()
       			},
-      
+      			resize:function(){
+      				//TODO: customize this
+        			canvas.width = $(window).width()
+        			canvas.height =$(window).height()-80
+        			particleSystem.screen({size:{width:canvas.width, height:canvas.height},padding:[40,40,40,40]})
+        			that.redraw()
+      			},
       			redraw:function(){
         			// 
         			// redraw will be called repeatedly during the run whenever the node positions
@@ -53,10 +71,11 @@
         			// the screen yourself, or use the convenience iterators .eachNode (and .eachEdge)
         			// which allow you to step through the actual node objects but also pass an
         			// x,y point in the screen's coordinate system
-        			// 
+        			//
+        			
         			ctx.fillStyle = "white"
         			ctx.fillRect(0,0, canvas.width, canvas.height)
-        
+        			
         			particleSystem.eachEdge(function(edge, pt1, pt2){
           				// edge: {source:Node, target:Node, length:#, data:{}}
           				// pt1:  {x:#, y:#}  source position in screen coords

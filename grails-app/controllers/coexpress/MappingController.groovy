@@ -6,6 +6,10 @@ class MappingController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
+	def select() {
+		[maps:Mapping.list()]
+	}
+	
     def index() {
         redirect(action: "list", params: params)
     }
@@ -15,7 +19,13 @@ class MappingController {
 	 */
 	
 	def set(){
-		session["mapping_id"] = 1;
+		if(Mapping.get(params["mapping_id"])!=null){
+			session["mapping_id"]=params["mapping_id"]
+			redirect(uri:"/")
+		}
+		else{
+			redirect(action:"select")
+		}
 	}
 	
 	def unset(){

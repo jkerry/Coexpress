@@ -61,27 +61,31 @@ class ModuleController {
     }
 	
 	def showAsCycle(){
-		
-		//get all modules which correspond to the given mapping_id
-		def modules = (Mapping.findById(params.mapping_id)).modules
-		//initialize empty map to store all module entries
-		def adjacency = []
-		def shape	=	grailsApplication.config.nodeShape
-		def dim		=	grailsApplication.config.nodeDim
-		modules.each{mod ->
-			
-			adjacency.add([
-				"id":"module_${mod.id}",
-				"name":mod.name,
-				"data":[
-					'color':"${mod.color}",
-					'type':"${shape}",
-					'dim':"${dim}"
-				],
-			]);
+		if(session["mapping_id"]==null){
+			redirect(controller:"Mapping",action:"select", params:params)
 		}
+		else{
+			//get all modules which correspond to the given mapping_id
+			def modules = (Mapping.findById(session["mapping_id"])).modules
+			//initialize empty map to store all module entries
+			def adjacency = []
+			def shape	=	grailsApplication.config.nodeShape
+			def dim		=	grailsApplication.config.nodeDim
+			modules.each{mod ->
+			
+				adjacency.add([
+					"id":"module_${mod.id}",
+					"name":mod.name,
+					"data":[
+						'color':"${mod.color}",
+						'type':"${shape}",
+						'dim':"${dim}"
+					],
+				]);
+			}
 		
-		[adjacency:adjacency]
+			[adjacency:adjacency]
+		}
 	}
 	
 	def listAsGraph(Integer mapping_id){

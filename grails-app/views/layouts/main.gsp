@@ -15,7 +15,7 @@
 		<link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
 		
 		<!-- Stylesheet Integration -->
-		
+		<link type="text/css" rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" />
 		<!-- Layout Header -->
 		<g:layoutHead/>
 		
@@ -23,10 +23,10 @@
 		<g:javascript library='jquery' />
 		<r:require modules="bootstrap"/>
 		<r:layoutResources />
+		
 	</head>
 	<body>
-		<div class="row">
-			<div class="span12">
+		
 				<div class="navbar .navbar-static-to">
   					<div class="navbar-inner">
     					<a class="brand" href="${createLink(uri: '/')}">Coexpress</a>
@@ -34,18 +34,21 @@
       						<li><a href="${createLink(uri: '/')}">Home</a></li>
       						<li><g:link controller="Module">Modules</g:link></li>
       						<li><g:link controller="Transcript">Transcripts</g:link></li>
-      						
-    					</ul>
+      					</ul>
+      					<g:if test="${session['mapping_id']==null}" >
+      						<g:link controller="Mapping" action="set" class="btn btn-warning pull-right">Set Mapping</g:link>
+      					</g:if>
+      					<g:else>
+      						<g:link controller="Mapping" action="select" class="btn btn-success pull-right">Change Mapping</g:link>
+      					</g:else>
+      					
   					</div>
 				</div>
-			</div>
-		</div>
+			
 		<!--[if lt IE 7]>
             <div class="row"><p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p></div>
         <![endif]-->
 		<g:layoutBody/>
-		<div class="footer" role="contentinfo"></div>
-		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
 		
 		<!-- noncritical js includes -->
 		<g:javascript library="application"/>
