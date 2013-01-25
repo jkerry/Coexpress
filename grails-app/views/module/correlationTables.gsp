@@ -28,9 +28,14 @@
 					</tr>
 				</thead>
 				<tbody>
-					<g:each in="${modules}" var="mod">
+					<g:each in="${modules}" var="mod" status="modIdx">
 						<g:set var="moduleRow" value="${table.get(mod.name)}" />
-						<tr>
+						<g:if test="${significance[modIdx]}">
+							<tr class="not_significant">
+						</g:if>
+						<g:else>
+							<tr>
+						</g:else>
 							<td><a href="${createLink(action:"show",id:mod.id)}">${mod.name}</a></td>
 							<g:each in="${moduleRow}" status="i" var="mt">
 								<td title="${traits[i].name} x ${mod.name}" class="heatmap">${mt.correlation.round(4)} (${mt.pValue.round(4)})</td>

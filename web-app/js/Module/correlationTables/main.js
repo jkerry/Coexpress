@@ -18,10 +18,10 @@ function removeHeatmap() {
 		$(this).css('background-color','');
 		$(this).removeClass('heated');
 	});
-	$("a.heatmap_btn").removeClass("btn-success");
-	$("a.heatmap_btn").addClass("btn-info");
-	$("a.heatmap_btn").text("Apply Heatmap");
-	$("a.heatmap_btn").click(addHeatmap);
+	$("a#toggle_heatmap").removeClass("btn-success");
+	$("a#toggle_heatmap").addClass("btn-info");
+	$("a#toggle_heatmap").text("Apply Heatmap");
+	$("a#toggle_heatmap").click(addHeatmap);
 }
 
 function addHeatmap() {
@@ -39,12 +39,34 @@ function addHeatmap() {
 		$(this).css('background-color',hex);
 		$(this).addClass('heated');
 	});
-	$("a.heatmap_btn").removeClass("btn-info");
-	$("a.heatmap_btn").addClass("btn-success");
-	$("a.heatmap_btn").text("Remove Heatmap");
-	$("a.heatmap_btn").click(removeHeatmap);
+	$("a#toggle_heatmap").removeClass("btn-info");
+	$("a#toggle_heatmap").addClass("btn-success");
+	$("a#toggle_heatmap").text("Remove Heatmap");
+	$("a#toggle_heatmap").click(removeHeatmap);
 	
 }
+
+function removeNonSignificantRows(){
+	$("tr.not_significant").css("display","none");
+	
+	$("a#toggle_signif").click(restoreNonSignificantRows);
+	$("a#toggle_signif").removeClass("btn-success");
+	$("a#toggle_signif").addClass("btn-info");
+	$("a#toggle_signif").text("Show Non-Sig");
+
+}
+
+function restoreNonSignificantRows(){
+	$("tr.not_significant").css("display","");
+	
+	$("a#toggle_signif").click(removeNonSignificantRows);
+	$("a#toggle_signif").removeClass("btn-info");
+	$("a#toggle_signif").addClass("btn-success");
+	$("a#toggle_signif").text("Hide Non-Sig");
+}
+
+
 $(document).ready(function(){
 	addHeatmap();
+	restoreNonSignificantRows();
 });

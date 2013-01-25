@@ -27,7 +27,7 @@
 	</head>
 	<body>
 		
-				<div class="navbar .navbar-static-to">
+				<div class="navbar navbar-fixed-top">
   					<div class="navbar-inner">
     					<a class="brand" href="${createLink(uri: '/')}">Coexpress</a>
     					<ul class="nav">

@@ -6,60 +6,36 @@
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'module.label', default: 'Module')}" />
 		<title><g:message code="default.show.label" args="[entityName]" /></title>
+		<style type="text/css">
+			div#show-module{
+				padding: 0px 65px 0px 65px;
+			}
+			h1#modName{
+				border-bottom: solid;
+				border-color: ${moduleInstance.color};
+			}
+		</style>
 	</head>
 	<body>
-		<a href="#show-module" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
-			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
-				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-			</ul>
-		</div>
-		<div id="show-module" class="content scaffold-show" role="main">
-			<h1><g:message code="default.show.label" args="[entityName]" /></h1>
+		<div id="show-module" >
+			<h1 id="modName" ><g:message code="default.show.label" args="[entityName]" />: <strong>${moduleInstance.name}</strong></h1>
 			<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
-			<ol class="property-list module">
-			
-				<g:if test="${moduleInstance?.name}">
-				<li class="fieldcontain">
-					<span id="name-label" class="property-label"><g:message code="module.name.label" default="Name" /></span>
-					
-						<span class="property-value" aria-labelledby="name-label"><g:fieldValue bean="${moduleInstance}" field="name"/></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${moduleInstance?.map}">
-				<li class="fieldcontain">
-					<span id="map-label" class="property-label"><g:message code="module.map.label" default="Map" /></span>
-					
-						<span class="property-value" aria-labelledby="map-label"><g:link controller="mapping" action="show" id="${moduleInstance?.map?.id}">${moduleInstance?.map?.encodeAsHTML()}</g:link></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${moduleInstance?.transcripts}">
-				<li class="fieldcontain">
-					<span id="transcripts-label" class="property-label"><g:message code="module.transcripts.label" default="Transcripts" /></span>
-					
-						<g:each in="${moduleInstance.transcripts}" var="t">
-						<span class="property-value" aria-labelledby="transcripts-label"><g:link controller="transcript" action="show" id="${t.id}">${t?.encodeAsHTML()}</g:link></span>
+			<div class="row">
+				<div class="span4">
+					<h3>Composite Transcripts</h3>
+					<p>The following transcripts had sufficient topological overlap to form the <em>${moduleInstance.name}</em> module. The <em>${moduleInstance.name}</em> eigengene is the first principle component of their transcript abundance profiles.</p>
+					<ul>
+						<g:each in="${moduleInstance.transcripts }" var="transcript">
+							<li><a href="${createLink(controller:'Transcript', action:'Show', id:transcript.id) }">${transcript.name}</a></li>
 						</g:each>
-					
-				</li>
-				</g:if>
-			
-			</ol>
-			<g:form>
-				<fieldset class="buttons">
-					<g:hiddenField name="id" value="${moduleInstance?.id}" />
-					<g:link class="edit" action="edit" id="${moduleInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
-					<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-				</fieldset>
-			</g:form>
+					</ul>
+				</div>
+				<div class="span6">
+				<p>test</p>
+				</div>
+			</div>
 		</div>
 	</body>
 </html>
