@@ -12,8 +12,15 @@ class TranscriptController {
 
     def list(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        [transcriptInstanceList: Transcript.list(params), transcriptInstanceTotal: Transcript.count()]
-    }
+		if(params.module_id){
+			def moduleInstance = Module.get(params.module_id);
+			def ct = moduleInstance.transcripts.size();
+			[transcriptInstanceList: Transcript.findAllByModules(moduleInstance,params), transcriptInstanceTotal: ct]
+		}
+		else{
+			[transcriptInstanceList: Transcript.list(params), transcriptInstanceTotal: moduleInstance.transcripts.size()]
+		}
+	}
 
     def create() {
         [transcriptInstance: new Transcript(params)]

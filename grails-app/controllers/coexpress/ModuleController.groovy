@@ -46,101 +46,50 @@ class ModuleController {
 	}
 	
 	def show(Long id) {
-		def moduleInstance = Module.get(id)
-		if (!moduleInstance) {
-			flash.message = message(code: 'default.not.found.message', args: [message(code: 'module.label', default: 'Module'), id])
-			redirect(action: "list")
-			return
+		if(session["mapping_id"]==null){
+			redirect(controller:"Mapping",action:"select", params:params)
 		}
-
-		[moduleInstance: moduleInstance]
+		else{
+			def p_max
+			def p_offset
+			if(!params.max){
+				p_max=10
+			}
+			else{
+				p_max = params.max.toInteger();
+			}
+			if(!params.offset){
+				p_offset=0
+			}
+			else{
+				p_offset=params.offset.toInteger()
+			}
+		
+			def moduleInstance = Module.get(id)
+			if (!moduleInstance) {
+				flash.message = message(code: 'default.not.found.message', args: [message(code: 'module.label', default: 'Module'), id])
+				redirect(action: "list")
+				return
+			}
+			/*
+			 * Structure a criterion query so that the module view doesn't overflow with transcript requests
+			 */
+			def transcriptCriteria = Transcript.createCriteria()
+			def transcriptInstanceList = transcriptCriteria.list(max:p_max, offset:p_offset) {
+				modules{
+					eq('id',params.id.toLong())
+				}
+			}
+			def tMapping = Mapping.get(session["mapping_id"])
+			def traitList = Trait.findAll("from Trait as t where t.map=?",[tMapping])
+			[moduleInstance: moduleInstance, transcriptInstanceList: transcriptInstanceList,transcriptCount:transcriptInstanceList.totalCount,traitList:traitList]
+		}
 	}
 	
 	
-    def list(Integer max) {
-        redirect(action: "correlationTables")
-    }
-	
-
-
-    def create() {
-        [moduleInstance: new Module(params)]
-    }
-
-    def save() {
-        def moduleInstance = new Module(params)
-        if (!moduleInstance.save(flush: true)) {
-            render(view: "create", model: [moduleInstance: moduleInstance])
-            return
-        }
-
-        flash.message = message(code: 'default.created.message', args: [message(code: 'module.label', default: 'Module'), moduleInstance.id])
-        redirect(action: "show", id: moduleInstance.id)
-    }
-
     
-
-    def edit(Long id) {
-        def moduleInstance = Module.get(id)
-        if (!moduleInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'module.label', default: 'Module'), id])
-            redirect(action: "list")
-            return
-        }
-
-        [moduleInstance: moduleInstance]
-    }
-
-    def update(Long id, Long version) {
-        def moduleInstance = Module.get(id)
-        if (!moduleInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'module.label', default: 'Module'), id])
-            redirect(action: "list")
-            return
-        }
-
-        if (version != null) {
-            if (moduleInstance.version > version) {
-                moduleInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-                          [message(code: 'module.label', default: 'Module')] as Object[],
-                          "Another user has updated this Module while you were editing")
-                render(view: "edit", model: [moduleInstance: moduleInstance])
-                return
-            }
-        }
-
-        moduleInstance.properties = params
-
-        if (!moduleInstance.save(flush: true)) {
-            render(view: "edit", model: [moduleInstance: moduleInstance])
-            return
-        }
-
-        flash.message = message(code: 'default.updated.message', args: [message(code: 'module.label', default: 'Module'), moduleInstance.id])
-        redirect(action: "show", id: moduleInstance.id)
-    }
-
-    def delete(Long id) {
-        def moduleInstance = Module.get(id)
-        if (!moduleInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'module.label', default: 'Module'), id])
-            redirect(action: "list")
-            return
-        }
-
-        try {
-            moduleInstance.delete(flush: true)
-            flash.message = message(code: 'default.deleted.message', args: [message(code: 'module.label', default: 'Module'), id])
-            redirect(action: "list")
-        }
-        catch (DataIntegrityViolationException e) {
-            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'module.label', default: 'Module'), id])
-            redirect(action: "show", id: id)
-        }
-    }
-	
-	
 	//TODO remove after sufficient development of action view_network
+	/**
 	def showAsCycle(){
 		if(session["mapping_id"]==null){
 			redirect(controller:"Mapping",action:"select", params:params)
@@ -194,4 +143,5 @@ class ModuleController {
 		
 		render adjacency as JSON
 	}
+	*/
 }

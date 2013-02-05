@@ -89,6 +89,8 @@ log4j = {
            'org.hibernate',
            'net.sf.ehcache.hibernate'
 }
+//fix tag lib to work with the bootstrap api
+grails.plugins.twitterbootstrap.fixtaglib = true
 
 //graph rendering options
 nodeShape 	= "circle"

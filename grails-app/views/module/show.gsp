@@ -27,15 +27,26 @@
 					<h3>Composite Transcripts</h3>
 					<p>The following transcripts had sufficient topological overlap to form the <em>${moduleInstance.name}</em> module. The <em>${moduleInstance.name}</em> eigengene is the first principle component of their transcript abundance profiles.</p>
 					<ul>
-						<g:each in="${moduleInstance.transcripts }" var="transcript">
-							<li><a href="${createLink(controller:'Transcript', action:'Show', id:transcript.id) }">${transcript.name}</a></li>
+						<g:each in="${transcriptInstanceList}">
+							<li><g:link controller="Transcript" action="show" id="${it.id}">${it.name }</g:link></a></li>
 						</g:each>
 					</ul>
+					<g:paginate controller="Module" action="show" total="${transcriptCount}" params="${[id:params.id]}" maxsteps="6" class="pagination-mini"/>
 				</div>
 				<div class="span6">
-				<p>test</p>
+					<h3>Module-Trait Relationships</h3>
+					<p>Select a trait to display a module membership vs trait significance scatter plot. The x and y axes are the absolute value of the correlation between the transcript and the <em>${moduleInstance.name}</em> module eigen-gene or trait profile respectively.</p>
+					<select name="trait_select" id="img_select">
+						<g:each in="${traitList}" var="trait">
+						<option value="${resource(dir:'images/Module/Scatterplots',file:"${session['mapping_id']}_${moduleInstance.name}_v_${trait.name}_genewiseSignificance.png")}">${trait.name}</option>
+						</g:each>
+					</select>
+					<div class="span6 centered" id="img_block">
+						<g:img id="sig_scatterplot" dir="images/Module/Scatterplots" class="vmargin_push75" file="${session['mapping_id']}_${moduleInstance.name}_v_${traitList[0].name}_genewiseSignificance.png"/>
+					</div>
 				</div>
 			</div>
 		</div>
+	<g:javascript src="Module/Show/main.js"/>
 	</body>
 </html>
