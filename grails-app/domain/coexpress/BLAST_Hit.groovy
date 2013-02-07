@@ -4,15 +4,16 @@ class BLAST_Hit {
 	Transcript query;
 	String subject;
 	float identity;
-	int alignment_length;
-	int mismatches;
-	int gap_openings;
-	int query_start;
-	int query_end;
-	int subject_start;
-	int subject_end;
+	long alignment_length;
+	long mismatches;
+	long gap_openings;
+	long query_start;
+	long query_end;
+	long subject_start;
+	long subject_end;
 	double e_value;
 	double bit_score;
+	long gi_number;
 	
 	static belongsTo = Transcript
 	

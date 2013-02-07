@@ -33,10 +33,10 @@
     					<ul class="nav">
       						<li><a href="${createLink(uri: '/')}">Home</a></li>
       						<li><g:link controller="Module">Modules</g:link></li>
-      						<li><g:link controller="Transcript">Transcripts</g:link></li>
+      						
       					</ul>
       					<g:if test="${session['mapping_id']==null}" >
-      						<g:link controller="Mapping" action="set" class="btn btn-warning pull-right">Set Mapping</g:link>
+      						<g:link controller="Mapping" action="select" class="btn btn-warning pull-right">Set Mapping</g:link>
       					</g:if>
       					<g:else>
       						<g:link controller="Mapping" action="select" class="btn btn-success pull-right">Change Mapping</g:link>

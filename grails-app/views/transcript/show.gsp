@@ -8,58 +8,50 @@
 		<title><g:message code="default.show.label" args="[entityName]" /></title>
 	</head>
 	<body>
-		<a href="#show-transcript" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
-			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
-				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-			</ul>
-		</div>
-		<div id="show-transcript" class="content scaffold-show" role="main">
-			<h1><g:message code="default.show.label" args="[entityName]" /></h1>
+		<div id="show-transcript" class="content" role="main">
+			<h1><g:message code="default.show.label" args="[entityName]" />: <Strong>${transcriptInstance.name}</Strong></h1>
 			<g:if test="${flash.message}">
-			<div class="message" role="status">${flash.message}</div>
+				<div class="message" role="status">${flash.message}</div>
 			</g:if>
-			<ol class="property-list transcript">
-			
-				<g:if test="${transcriptInstance?.name}">
-				<li class="fieldcontain">
-					<span id="name-label" class="property-label"><g:message code="transcript.name.label" default="Name" /></span>
-					
-						<span class="property-value" aria-labelledby="name-label"><g:fieldValue bean="${transcriptInstance}" field="name"/></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${transcriptInstance?.sequence}">
-				<li class="fieldcontain">
-					<span id="sequence-label" class="property-label"><g:message code="transcript.sequence.label" default="Sequence" /></span>
-					
-						<span class="property-value" aria-labelledby="sequence-label"><g:fieldValue bean="${transcriptInstance}" field="sequence"/></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${transcriptInstance?.libraries}">
-				<li class="fieldcontain">
-					<span id="libraries-label" class="property-label"><g:message code="transcript.libraries.label" default="Libraries" /></span>
-					
-						<g:each in="${transcriptInstance.libraries}" var="l">
-						<span class="property-value" aria-labelledby="libraries-label"><g:link controller="library" action="show" id="${l.id}">${l?.encodeAsHTML()}</g:link></span>
-						</g:each>
-					
-				</li>
-				</g:if>
-			
-			</ol>
-			<g:form>
-				<fieldset class="buttons">
-					<g:hiddenField name="id" value="${transcriptInstance?.id}" />
-					<g:link class="edit" action="edit" id="${transcriptInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
-					<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-				</fieldset>
-			</g:form>
+			<div class="row"></div>
+				<div class="span5" id="sequenceStats">
+					<div id="fasta">
+						<h3>Sequence</h3>
+						<g:render template="fastaTextArea" model="${['sequence':transcriptInstance.sequence,'name':transcriptInstance.name]}"/>
+					</div>
+					<hr/>
+					<div id="expressionProfile">
+						<h3>Expression Profile</h3>
+						<p>Expression profile dynamic view is in development.</p>
+					</div>
+				</div>
+				<div class="span7" id="blastInfo">
+					<h3>BLAST Hits</h3>
+					<p>The following are (at most) the top 3 BLAST hits for this sequence against the ncbi non-redundant protein database. The hit-names are hotlinked to the appropriate ncbi fact sheet.</p>	
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>Subject</th>
+								<th>Identity</th>
+								<th>Alignment Length</th>
+								<th>E-Value</th>
+								<th>Bit Score</th>
+							</tr>
+						</thead>
+						<tbody>
+							<g:each var="bhit" in="${transcriptInstance.blast_hits}">
+							<tr>
+								<td><a href="http://www.ncbi.nlm.nih.gov/protein/${bhit.gi_number}">${bhit.subject}</a></td>
+								<td>${bhit.identity}</td>
+								<td>${bhit.alignment_length}</td>
+								<td>${bhit.e_value}</td>
+								<td>${bhit.bit_score}</td>
+							</tr>
+							</g:each>
+						</tbody>
+					</table>
+				</div>
+			</div>
 		</div>
 	</body>
 </html>

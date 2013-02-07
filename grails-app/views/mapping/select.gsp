@@ -8,6 +8,9 @@
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
 	</head>
 	<body>
+		<g:if test="${flash.message}">
+			<div class="message" role="status"><p class="text-warning">${flash.message}</p></div>
+		</g:if>
 		<div id="content">
 		<h1>Select a mapping</h1>
 		<p>Mapping in this context is functionally synonymous with 'experiment'. Different mappings represent different assemblies and abundance estimation  of the same data and/or assemblies and abundance estimation of different species/tissues/etc.</p>

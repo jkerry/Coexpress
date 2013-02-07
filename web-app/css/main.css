@@ -9,3 +9,10 @@ body{
 .vmargin_push75{
 	margin: 75px 0px;
 }
+
+div.message{
+	padding-top: 15px;
+	border-bottom: 1px dashed;
+	width: 100%;
+	text-align: center;
+}

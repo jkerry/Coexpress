@@ -4,17 +4,16 @@ class Stats {
 	
 	Transcript transcript
 	Library library
-	int rawCount
-	double maxExpectationCount
-	double fpkm
-	float componentFpkm
-	double depValue
-	double defdr
+	int rawCount = 0.0
+	double maxExpectationCount = 0.0
+	double fpkm = 0.0
+	float componentFpkm = 0.0
+	double depValue =1.0
+	double defdr = 1.0
 	
     static constraints = {
-		//transcript(nullable:false)
-		//library(nullable:false)
-		
+		transcript(nullable:false)
+		library(nullable:false)
     }
 	
 	static mapping ={

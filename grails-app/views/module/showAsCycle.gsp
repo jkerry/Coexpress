@@ -15,6 +15,7 @@
 
 	<g:javascript src="jquery/arbor/jquery.arbor.js" />
 	<g:javascript src="jquery/arbor/jquery.arbor-tween.js" />
+	<g:javascript src="Module/arbor_honeydew.js" />
 	<g:javascript>
 	
 			$(document).ready(function(){
@@ -156,7 +157,7 @@
   				}    
 
   				$(document).ready(function(){
-    				var sys = arbor.ParticleSystem(1000, 600, 0.5) // create the system with sensible repulsion/stiffness/friction
+    				var sys = arbor.ParticleSystem(1000, 800, 0.5) // create the system with sensible repulsion/stiffness/friction
     				sys.parameters({gravity:true}) // use center-gravity to make the graph settle nicely (ymmv)
     				sys.renderer = Renderer("#viewport") // our newly created renderer will have its .init() method called shortly by sys...
 
@@ -164,20 +165,7 @@
     				var prev;
     				var oprev;
     				var first;
-    				<g:each in="${adjacency}" status="i" var="mod">
-    					<g:if test="${i==0}"> 
-    						prev = sys.addNode("${mod.name }",{color:"${mod.data.color}"});
-    						first =  prev;
-    					</g:if>
-    					<g:else>
-    						oprev = prev;
-    						prev = sys.addNode("${mod.name }",{color:"${mod.data.color}"});
-    						sys.addEdge(oprev,prev);
-    					</g:else>
-    				</g:each>
-    				sys.addEdge(prev,first);
-    				
-
+    				arbor_construct(sys);
     
   				});
     		}) ;

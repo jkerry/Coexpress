@@ -15,6 +15,7 @@ class ModuleController {
 	def correlationTables(){
 		/*if you havent selected a mapping run, redirect to do so*/
 		if(session["mapping_id"]==null){
+			flash.message = "Please select a Mapping first"
 			redirect(controller:"Mapping",action:"select", params:params)
 		}
 		else{

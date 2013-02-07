@@ -95,3 +95,6 @@ grails.plugins.twitterbootstrap.fixtaglib = true
 //graph rendering options
 nodeShape 	= "circle"
 nodeDim		= 5
+
+//entrez ajax
+ent_ajax=	"18732cf4ff87fdab55a1c82914eb401e"
