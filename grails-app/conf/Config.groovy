@@ -65,7 +65,7 @@ environments {
     }
     production {
         grails.logging.jul.usebridge = false
-        // TODO: grails.serverURL = "http://www.changeme.com"
+        grails.serverURL = "http://jlmwiki.plantbio.uga.edu/Coexpress"
     }
 }
 
@@ -98,3 +98,8 @@ nodeDim		= 5
 
 //entrez ajax
 ent_ajax=	"18732cf4ff87fdab55a1c82914eb401e"
+
+// Added by the Spring Security Core plugin:
+grails.plugins.springsecurity.userLookup.userDomainClassName = 'coexpress.User'
+grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'coexpress.UserRole'
+grails.plugins.springsecurity.authority.className = 'coexpress.Role'

@@ -1,0 +1,10 @@
+*.png
+grails-app/conf/DataSource.groovy
+.classpath
+.project
+.settings/
+target-eclipse/
+target/
+web-app/js/FDViz.js
+web-app/js/Module/arbor_brown.js
+web-app/js/Module/arbor_honeydew.js

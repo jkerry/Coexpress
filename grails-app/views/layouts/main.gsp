@@ -35,12 +35,19 @@
       						<li><g:link controller="Module">Modules</g:link></li>
       						
       					</ul>
+      					
       					<g:if test="${session['mapping_id']==null}" >
       						<g:link controller="Mapping" action="select" class="btn btn-warning pull-right">Set Mapping</g:link>
       					</g:if>
       					<g:else>
       						<g:link controller="Mapping" action="select" class="btn btn-success pull-right">Change Mapping</g:link>
       					</g:else>
+      					<sec:ifLoggedIn>
+      						<g:link controller="Logout" action="index" class="btn btn-success pull-right">Log Out</g:link>
+      					</sec:ifLoggedIn>
+      					<sec:ifNotLoggedIn>
+      						<g:link controller="Login" action="auth" class="btn btn-warning pull-right">Log In</g:link>
+      					</sec:ifNotLoggedIn>
       					
   					</div>
 				</div>

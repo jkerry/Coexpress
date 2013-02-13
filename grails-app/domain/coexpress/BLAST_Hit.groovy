@@ -14,6 +14,10 @@ class BLAST_Hit {
 	double e_value;
 	double bit_score;
 	long gi_number;
+	String accession = "";
+	String organism = "";
+	String defline = "";
+	String keywords = "";
 	
 	static belongsTo = Transcript
 	

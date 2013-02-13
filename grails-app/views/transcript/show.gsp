@@ -41,7 +41,7 @@
 						<tbody>
 							<g:each var="bhit" in="${transcriptInstance.blast_hits}">
 							<tr>
-								<td><a href="http://www.ncbi.nlm.nih.gov/protein/${bhit.gi_number}">${bhit.subject}</a></td>
+								<td><a href="http://www.ncbi.nlm.nih.gov/protein/${bhit.gi_number}" target="_blank">${bhit.subject}</a></td>
 								<td>${bhit.identity}</td>
 								<td>${bhit.alignment_length}</td>
 								<td>${bhit.e_value}</td>

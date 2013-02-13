@@ -3,14 +3,53 @@ package coexpress
 import org.springframework.dao.DataIntegrityViolationException
 import grails.converters.JSON
 
+
 class ModuleController {
 	def grailsApplication
+	
 	
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
         redirect(action: "correlationTables", params: params)
     }
+	
+	def getHitsAsJson(){
+		if(session["mapping_id"]==null){
+			flash.message = "Please select a Mapping first"
+			redirect(controller:"Mapping",action:"select", params:params)
+		}
+		else{
+			def moduleInstance = Module.get(params.id)
+			def res = [];
+			if (!moduleInstance) {
+				res.push('Module Not Found')
+				def val = [:];
+				val['results'] = res;
+				render val as JSON;
+			}
+			
+			//get a best hit from the top 300 transcripts and send back the gi numbers
+			def transcriptCriteria = Transcript.createCriteria()
+			def transcriptInstanceList = transcriptCriteria.list(max:2000,offset:0) {
+				modules{
+					eq('id',params.id.toLong())
+				}
+			}
+			
+			transcriptInstanceList.each {
+				def blastHits = BLAST_Hit.findAllByQuery(it, [sort:"bit_score"]);
+				//res.push(bestHit.gi_number);
+				if(blastHits.size() > 0)blastHits.each{ bhit->
+					if(bhit.keywords != "")
+					res.push(bhit.keywords);
+				}
+			}
+			def val = [:];
+			val['results'] = res;
+			render val as JSON;
+		}
+	}
 	
 	def correlationTables(){
 		/*if you havent selected a mapping run, redirect to do so*/
@@ -20,7 +59,7 @@ class ModuleController {
 		}
 		else{
 			def thisMap = Mapping.findById(session["mapping_id"]);
-			def modules = Module.findAllWhere( map:thisMap );
+			def modules = Module.findAllWhere( map:thisMap, [cache:true] );
 			modules.sort {it.name};
 			def traits = Trait.findAllWhere( map:thisMap );
 			traits.sort {it.id}
@@ -83,7 +122,20 @@ class ModuleController {
 			}
 			def tMapping = Mapping.get(session["mapping_id"])
 			def traitList = Trait.findAll("from Trait as t where t.map=?",[tMapping])
-			[moduleInstance: moduleInstance, transcriptInstanceList: transcriptInstanceList,transcriptCount:transcriptInstanceList.totalCount,traitList:traitList]
+			def bhits = [:]
+			transcriptInstanceList.each { transcriptInstance ->
+				def hits = BLAST_Hit.findAll {
+					query == transcriptInstance
+				}
+				if(hits){
+					def hitlist = (hits.asList().sort{a,b-> a.bit_score <=> b.bit_score  }).reverse();
+					//hits.reverse();
+					bhits.put(transcriptInstance,hitlist[0]);
+				}
+				//else print hits.toString();
+			}
+			
+			[moduleInstance: moduleInstance, transcriptInstanceList: transcriptInstanceList,transcriptCount:transcriptInstanceList.totalCount,traitList:traitList, blastHitList:bhits]
 		}
 	}
 	
