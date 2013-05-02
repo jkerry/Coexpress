@@ -30,10 +30,10 @@ function addHeatmap() {
 		var cor = parseFloat(text.split(" ")[0]);
 		var hex;
 		if(cor>=0){
-			hex = rgbToHex(Math.round((255)*cor),0,0);
+			hex = rgbToHex(0,Math.round((255)*cor),0);
 		}
 		else{
-			hex = rgbToHex(0,Math.round((255)*(-1)*cor),0);
+			hex = rgbToHex(Math.round((255)*(-1)*cor),0,0);
 		}
 					
 		$(this).css('background-color',hex);
